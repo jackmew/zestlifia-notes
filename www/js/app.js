@@ -1,22 +1,36 @@
-var app = angular.module('starter', ['ionic'])
+(function() {
+
+var app = angular.module('starter', ['ionic']);
+
+var notes = [
+  {
+    id: '1',
+    title: 'First Notes',
+    description: 'First Description'
+  },
+  { 
+    id: '2',
+    title: 'Second Notes',
+    description: 'Second Description'
+  }
+] ;
+
+function getNote(noteId) {
+
+  for(var i = 0 ; i < notes.length ; i++) {
+    if(notes[i].id === noteId) {
+      return notes[i];
+    }
+  }
+  return undefined ;
+};
 
 app.controller('ListCtrl', function($scope) {
-  $scope.notes = [
-    {
-      id: '1',
-      title: 'First Notes',
-      description: 'First Description'
-    },
-    { 
-      id: '2',
-      title: 'Second Notes',
-      description: 'Second Description'
-    }
-  ] ;
+  $scope.notes = notes ;
 });
 
 app.controller('EditCtrl', function($scope, $state) {
-  $scope.noteId = $state.params.noteId ;
+  $scope.note = getNote($state.params.noteId) ;
 });
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -43,3 +57,5 @@ app.run(function($ionicPlatform) {
     }
   });
 })
+
+}());
