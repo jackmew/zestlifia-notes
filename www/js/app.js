@@ -2,18 +2,7 @@
 
 var app = angular.module('starter', ['ionic']);
 
-var notes = [
-  {
-    id: '1',
-    title: 'First Notes',
-    description: 'First Description'
-  },
-  { 
-    id: '2',
-    title: 'Second Notes',
-    description: 'Second Description'
-  }
-] ;
+var notes = [];
 
 function getNote(noteId) {
 
@@ -35,6 +24,10 @@ function updateNote(note) {
   }
 }
 
+function createNote(note) {
+  notes.push(note);
+}
+
 app.controller('ListCtrl', function($scope) {
   $scope.notes = notes ;
 });
@@ -48,6 +41,19 @@ app.controller('EditCtrl', function($scope, $state) {
   }
 });
 
+app.controller('AddCtrl', function($scope, $state) {
+  $scope.note = {
+    id: new Date().getTime().toString(),
+    title: '',
+    description: ''
+  };
+
+  $scope.save = function() {
+    createNote($scope.note);
+    $state.go("list");
+  };
+}) ;
+
 app.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider.state('list', {
     url: '/list',
@@ -55,7 +61,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
   });
   $stateProvider.state('edit', {
     url: '/edit/:noteId',
-    templateUrl: 'templates/edit.html'
+    templateUrl: 'templates/edit.html',
+    controller: 'EditCtrl'
+  });
+ $stateProvider.state('add', {
+    url: '/add',
+    templateUrl: 'templates/edit.html',
+     controller: 'AddCtrl'
   });
   $urlRouterProvider.otherwise('/list');
 });
