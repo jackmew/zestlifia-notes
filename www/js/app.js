@@ -2,46 +2,52 @@
 
 var app = angular.module('starter', ['ionic']);
 
-var notes = [];
+app.factory('NoteStore', function() {
 
-function getNote(noteId) {
+  var notes = [] ;
 
-  for(var i = 0 ; i < notes.length ; i++) {
-    if(notes[i].id === noteId) {
-      return notes[i];
+  return {
+
+    list: function() {
+      return notes ;
+    },
+    get: function(noteId) {
+      for(var i = 0 ; i < notes.length ; i++) {
+        if(notes[i].id === noteId) {
+          return notes[i];
+        }
+      }
+      return undefined ;
+    },
+    create: function(note) {
+      notes.push(note);
+    },
+    update: function(note) {
+      for(var i = 0 ; i < notes.length ; i++) {
+        if(notes[i].id === note.id) {
+          notes[i] = note ;
+          return ;
+        }
+      }
     }
-  }
-  return undefined ;
-};
 
-function updateNote(note) {
-
-  for(var i = 0 ; i < notes.length ; i++) {
-    if(notes[i].id === note.id) {
-      notes[i] = note ;
-      return ;
-    }
-  }
-}
-
-function createNote(note) {
-  notes.push(note);
-}
-
-app.controller('ListCtrl', function($scope) {
-  $scope.notes = notes ;
+  };
 });
 
-app.controller('EditCtrl', function($scope, $state) {
-  $scope.note = angular.copy(getNote($state.params.noteId));
+app.controller('ListCtrl', function($scope, NoteStore) {
+  $scope.notes = NoteStore.list() ;
+});
+
+app.controller('EditCtrl', function($scope, $state, NoteStore) {
+  $scope.note = angular.copy(NoteStore.get($state.params.noteId));
 
   $scope.save = function() {
-    updateNote($scope.note);
+    NoteStore.update($scope.note);
     $state.go("list");
   }
 });
 
-app.controller('AddCtrl', function($scope, $state) {
+app.controller('AddCtrl', function($scope, $state, NoteStore) {
   $scope.note = {
     id: new Date().getTime().toString(),
     title: '',
@@ -49,7 +55,7 @@ app.controller('AddCtrl', function($scope, $state) {
   };
 
   $scope.save = function() {
-    createNote($scope.note);
+    NoteStore.create($scope.note);
     $state.go("list");
   };
 }) ;
