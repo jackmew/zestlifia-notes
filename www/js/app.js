@@ -25,12 +25,27 @@ function getNote(noteId) {
   return undefined ;
 };
 
+function updateNote(note) {
+
+  for(var i = 0 ; i < notes.length ; i++) {
+    if(notes[i].id === note.id) {
+      notes[i] = note ;
+      return ;
+    }
+  }
+}
+
 app.controller('ListCtrl', function($scope) {
   $scope.notes = notes ;
 });
 
 app.controller('EditCtrl', function($scope, $state) {
-  $scope.note = getNote($state.params.noteId) ;
+  $scope.note = angular.copy(getNote($state.params.noteId));
+
+  $scope.save = function() {
+    updateNote($scope.note);
+    $state.go("list");
+  }
 });
 
 app.config(function($stateProvider, $urlRouterProvider) {
