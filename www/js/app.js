@@ -13,6 +13,18 @@ app.controller('ListCtrl', function($scope) {
   ] ;
 });
 
+app.config(function($stateProvider, $urlRouterProvider) {
+  $stateProvider.state('list', {
+    url: '/list',
+    templateUrl: 'templates/list.html'
+  });
+  $stateProvider.state('edit', {
+    url: '/edit',
+    templateUrl: 'templates/edit.html'
+  });
+  $urlRouterProvider.otherwise('/list');
+});
+
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
