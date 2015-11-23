@@ -3,10 +3,22 @@
 var app = angular.module('zestlifiaNote', ['ionic','zestlifiaNote.noteStore']);
 
 app.controller('ListCtrl', function($scope, NoteStore) {
+  
   $scope.notes = NoteStore.list() ;
+  $scope.reordering = false ;
 
   $scope.remove = function(noteId) {
     NoteStore.remove(noteId);
+  };
+
+  $scope.move = function(note, fromIndex, toIndex) {
+    console.log("move - "+note.title+" from "+ fromIndex + " to "+toIndex);
+
+    NoteStore.move(note, fromIndex, toIndex);
+  };
+
+  $scope.toggleReordering = function() {
+    $scope.reordering = !$scope.reordering ;
   };
 });
 
