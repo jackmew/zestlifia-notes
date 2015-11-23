@@ -3,14 +3,20 @@ var app = angular.module('starter', ['ionic'])
 app.controller('ListCtrl', function($scope) {
   $scope.notes = [
     {
+      id: '1',
       title: 'First Notes',
       description: 'First Description'
     },
-    {
+    { 
+      id: '2',
       title: 'Second Notes',
       description: 'Second Description'
     }
   ] ;
+});
+
+app.controller('EditCtrl', function($scope, $state) {
+  $scope.noteId = $state.params.noteId ;
 });
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -19,7 +25,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/list.html'
   });
   $stateProvider.state('edit', {
-    url: '/edit',
+    url: '/edit/:noteId',
     templateUrl: 'templates/edit.html'
   });
   $urlRouterProvider.otherwise('/list');
