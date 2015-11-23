@@ -4,6 +4,10 @@ var app = angular.module('zestlifiaNote', ['ionic','zestlifiaNote.noteStore']);
 
 app.controller('ListCtrl', function($scope, NoteStore) {
   $scope.notes = NoteStore.list() ;
+
+  $scope.remove = function(noteId) {
+    NoteStore.remove(noteId);
+  };
 });
 
 app.controller('EditCtrl', function($scope, $state, NoteStore) {
